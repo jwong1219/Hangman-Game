@@ -20,7 +20,7 @@ function game() {
   var lives = 6;
   var guessed = [];
   var word = wordsList[(Math.floor(Math.random() * lenList))];
-  console.log("the randomly selected word is " + word);
+  //console.log("the randomly selected word is " + word);
 
   var displayWord = [];
   for ( var i = 0; i<word.length; i++) {
