@@ -8,6 +8,22 @@ var blast3 = new Audio('assets/sounds/blaster-ric.wav');
 var blasts = [blast1, blast2, blast3];
 var scream = new Audio('assets/sounds/scream.mp3');
 var nooo = new Audio('assets/sounds/nooo.mp3');
+var deflect = new Audio('assets/sounds/saber-deflect.wav');
+
+function playBlasts() {
+  blasts[(Math.floor(Math.random() * 3))].play();
+}
+
+function playScream() {
+  scream.play();
+}
+
+function playDeflect() {
+  deflect.play();
+}
+
+
+
 
 //console.log(alphArray);
 //console.log("the length of the words array is: " + lenList);
@@ -35,12 +51,11 @@ function game() {
 
   //rewrite the html span with displayWord
 
-  alert("start guessing letters by pressing a key");
-
   document.onkeyup = function(event) {
     var letter = event.key;
-    if(guessed.indexOf(letter) === -1) {
-      blasts[(Math.floor(Math.random() * 3))].play();
+    if(guessed.indexOf(letter) === -1 && alphArray.indexOf(letter) !== -1) {
+      playBlasts();
+      //playBlasts();
       var loseLife = true;
       for (var i=0; i<word.length; i++) {
         if (letter === word[i]) {
@@ -52,7 +67,9 @@ function game() {
       console.log(displayWord);
       if (loseLife) {
         console.log("letters you have guessed: " + guessed);
-        scream.play();
+        setTimeout(playDeflect, 500);
+        setTimeout(playScream, 1500);
+        //playScream();
         //make trooper-(lives) hidden;
         lives--;
         console.log("Lives remaining: " + lives);
@@ -61,7 +78,8 @@ function game() {
           game();
         }
       }
-      console.log("Lives remaining: " + lives);
+      else 
+        {console.log("Lives remaining: " + lives);}
       if (displayWord.indexOf("_") === -1 ) { //This means there are no more hidden letters, and the player has won
         score ++;
         nooo.play();
@@ -70,7 +88,6 @@ function game() {
       }
     }
   }
-
 }
 
 game();
