@@ -9,9 +9,19 @@ var blasts = [blast1, blast2, blast3];
 var scream = new Audio('assets/sounds/scream.mp3');
 var nooo = new Audio('assets/sounds/nooo.mp3');
 var deflect = new Audio('assets/sounds/saber-deflect.wav');
+var breathing = new Audio('assets/sounds/breathing.mp3');
+var darkSide = new Audio('assets/sounds/darkside.mp3');
+var comeBack = new Audio ('assets/sounds/vader01.mp3');
+var impMarch = new Audio ('assets/sounds/imperial_march.mp3');
+var vaderEffects = [breathing, darkSide, comeBack];
+var loseLife; //need this declared out here....or else it doesn't get changed locally;
 
 function playBlasts() {
   blasts[(Math.floor(Math.random() * 3))].play();
+}
+
+function playVaderEffects() {
+  vaderEffects[(Math.floor(Math.random() * 3))].play();
 }
 
 function playScream() {
@@ -20,6 +30,10 @@ function playScream() {
 
 function playDeflect() {
   deflect.play();
+}
+
+function playDarkSide() {
+  darkSide.play();
 }
 
 function removeTrooper(lives) {
@@ -52,10 +66,33 @@ function resetTroopers() {
   }
 }
 
+function updateDisWord(modWord, currentDisplayWord, letterIn, checkCounter) {
+  var newDisplayWord = "";
+  for (var i=0; i<modWord.length; i++) {
+    if (letterIn === modWord[i]) {
+      newDisplayWord += letterIn; 
+      loseLife = false;
+      console.log("the position is " + i);
+      console.log("the letter at this position is " + modWord[i]);
+    }
+    else {
+      newDisplayWord += currentDisplayWord[i];
+    }
+  }
+  checkCounter++;
+  console.log({checkCounter});
+  console.log({newDisplayWord});
+  console.log({loseLife});   
+  return newDisplayWord;
+}
 
 var score = 0;
 
 function game() {
+  impMarch.pause();
+  impMarch.currentTime = 0;
+  breathing.play();
+  setTimeout(playDarkSide, 4200);
   var lives = 6;
   var guessed = [];
   document.querySelector("#guesses").innerHTML = guessed;
@@ -90,9 +127,12 @@ function game() {
   document.onkeyup = function(event) {
     var letter = event.key;
     console.log({letter});
+
+    
     if(guessed.indexOf(letter) === -1 && alphArray.indexOf(letter) !== -1) {
       playBlasts();
-      var loseLife = true; //starts off true, and will be changed to false if the letter is found in the word
+      loseLife = true; //starts off true, and will be changed to false if the letter is found in the word
+      
       // for (var i=0; i<modifiedWord.length; i++) {
       //   if (letter === modifiedWord[i]) {
       //     displayWord.charAt(i) = letter; //for some reason, this is not happening.
@@ -101,19 +141,24 @@ function game() {
       //     console.log("the letter at this position is " + modifiedWord[i]);
       //   }
       // }
-      var upDateWord = "";
-      for (var i=0; i<modifiedWord.length; i++) {
-        if (letter === modifiedWord[i]) {
-        upDateWord += letter; //for some reason, this is not happening.
-        loseLife = false;
-        console.log("the position is " + i);
-        console.log("the letter at this position is " + modifiedWord[i]);
-        }
-        else {
-          upDateWord += displayWord[i];
-        }
-      }
-      displayWord = upDateWord; 
+      var check = 0;
+      displayWord = updateDisWord(modifiedWord, displayWord, letter, loseLife, check);
+      console.log({loseLife});
+      console.log({check});
+
+      // var upDateWord = ""; //currently working block of code that I'm trying to replace with a function
+      // for (var i=0; i<modifiedWord.length; i++) {
+      //   if (letter === modifiedWord[i]) {
+      //   upDateWord += letter; //for some reason, this is not happening.
+      //   loseLife = false;
+      //   console.log("the position is " + i);
+      //   console.log("the letter at this position is " + modifiedWord[i]);
+      //   }
+      //   else {
+      //     upDateWord += displayWord[i];
+      //   }
+      // }
+      // displayWord = upDateWord; 
 
       guessed.push(letter); //adds the guessed letter to the array
       document.querySelector("#displayCode").innerHTML = displayWord;
@@ -122,17 +167,19 @@ function game() {
       document.querySelector("#guesses").innerHTML = guessed;
       console.log("letters you have guessed: " + guessed);
 
-      if (loseLife) { //if the player guessed incorrectly, losesLife is still true
+      if (loseLife) { //if the player guessed incorrectly, loseLife is still true
         
         setTimeout(playDeflect, 500);
         setTimeout(playScream, 1500);
         //playScream();
         setTimeout(removeTrooper, 1700, lives);//make trooper-(lives) hidden;
+        setTimeout(playVaderEffects, 2000);
         lives--;
         console.log("Lives remaining: " + lives);
-        //document.querySelector("#displayLives") = String(lives);
+        document.querySelector("#displayLives").innerHTML = String(lives);
         
         if (lives === 0) {
+          impMarch.play();
           document.querySelector("#alert").innerHTML = ("You have failed to stop Darth Vader, but you may live to fight another day. Press any key to try again");
           //alert("You have failed to stop Darth Vader, but you may live to fight another day");
           document.onkeyup = function(event){
@@ -144,6 +191,7 @@ function game() {
         {console.log("Lives remaining: " + lives);}
       if (displayWord.indexOf("_") === -1 ) { //This means there are no more hidden letters, and the player has won
         score ++;
+        document.querySelector("#displayScore").innerHTML = score;
         nooo.play();
         document.querySelector("#alert").innerHTML = ("You have stopped Darth Vader!! Good work Rogues! Press any key for your next mission!");
         //alert("You have stopped Darth Vader!! Good work Rogues!");
@@ -155,20 +203,6 @@ function game() {
   }
 }
 
-// function updateDisWord(word) {
-//   var upDateWord = "";
-//   for (var i=0; i<modifiedWord.length; i++) {
-//     if (letter === modifiedWord[i]) {
-//       upDateWord += letter; //for some reason, this is not happening.
-//       loseLife = false;
-//       console.log("the position is " + i);
-//       console.log("the letter at this position is " + modifiedWord[i]);
-//     }
-//     else {
-//       upDateWord += modifiedWord[i];
-//     }
-//   }   
-//   word =  upDateWord;
-// }
+
 
 game();
