@@ -107,7 +107,7 @@ function game() {
       modifiedWord += (word[i] + " ");
     }
     else {
-      modifiedWord += (" ");
+      modifiedWord += ("  ");
     }
   }
   console.log({modifiedWord});

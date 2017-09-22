@@ -1,0 +1,41 @@
+
+@font-face {
+  font-family: SWFont;
+  src: url(../fonts/starjedi.ttf);
+}
+
+* {
+  background-color: inherit;
+  color: #fee73b;
+}
+
+body{
+  background-color: #240505;
+}
+
+.jumbotron{
+  background-color: #240505;
+}
+
+#star-wars-title{
+  max-height: 75%;
+}
+
+#hangman{
+  /*font-family: SWFont;*/
+  color: #fee73b;
+  font-size: 40px;
+  position: relative;
+  bottom: 25%;
+}
+
+.trooper{
+
+}
+
+#trooper-5, #trooper-6 {
+  max-width: 75%;
+  position: absolute;
+  top: -2%;
+
+}
