@@ -26,14 +26,37 @@ body{
   color: #fee73b;
   font-size: 40px;
   position: relative;
-  bottom: 25%;
+  bottom: 80px;
+  background-color: black;
 }
 
+#vader{
+  max-width: 200%;
+}
 
+.trooper {
+  position: absolute;
+}
 
 #trooper-5, #trooper-6 {
   max-width: 75%;
-  position: absolute;
-  top: -2%;
-
+  top: -5%;
 }
+
+#trooper-5 {
+  right: -3%;
+}
+
+#trooper-6 {
+  left: -3%;
+}
+
+#trooper-3, #trooper-4 {
+  max-width: 80%;
+  top: -2%;
+}
+
+#displayCode {
+  font-size: 30px;
+}
+
