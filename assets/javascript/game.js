@@ -60,10 +60,12 @@ function removeTrooper(lives) {
 }
 
 function resetTroopers() {
-  var x = document.getElementsByClassName(".trooper");
+  var x = document.getElementsByClassName("trooper");
+  console.log({x});
   for (var i=0; i < x.length; i++) {
     x[i].style.visibility = "visible";
   }
+  console.log("troopers reset");
 }
 
 function updateDisWord(modWord, currentDisplayWord, letterIn, checkCounter) {
@@ -87,13 +89,15 @@ function updateDisWord(modWord, currentDisplayWord, letterIn, checkCounter) {
 }
 
 var score = 0;
+var lives; 
 
 function game() {
   impMarch.pause();
   impMarch.currentTime = 0;
   breathing.play();
   setTimeout(playDarkSide, 4200);
-  var lives = 6;
+  lives = 6;
+  document.querySelector("#displayLives").innerHTML = lives;
   var guessed = [];
   document.querySelector("#guesses").innerHTML = guessed;
   var word = wordsList[(Math.floor(Math.random() * lenList))];
